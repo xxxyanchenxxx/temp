@@ -42,7 +42,7 @@ VA提供了APP静默安装，静默升级，静默卸载的能力。如应用商
 VA实现了对Google服务的支持，以支持海外的App运行，比如Twitter、Messenger、WhatsApp、Instagram、FaceBook、Youtube等。
 
 ### 7.其他需求 ###
-VA对于内部的App具有完全的监控和控制能力，几乎能满足您的一切需求！
+VA对于内部的App具有完全的监管和控制能力，几乎能满足您的一切需求！
 
 VA的其他特性
 ---

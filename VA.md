@@ -50,9 +50,7 @@ VA的详细开发文档请参考：[https://github.com/asLody/VirtualApp-Priv/wi
 
 ## VA架构 ##
 
-![](https://github.com/xxxyanchenxxx/temp/blob/master/va1.png)
-
-![](https://github.com/xxxyanchenxxx/temp/blob/master/va2.png)
+![](https://github.com/xxxyanchenxxx/temp/blob/master/va1.jpg)
 
 
 ## VA与其他技术方案对比 ##

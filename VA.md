@@ -3,8 +3,81 @@
 ## VA是什么? ##
 VirtualApp(简称：VA)是一款运行于Android系统的沙盒产品，可以理解为轻量级的“Android虚拟机”。其产品形态为高可扩展，可定制的集成SDK，您可以基于VA或者使用VA定制开发各种看似不可能完成的项目。VA目前被广泛应用于APP多开、手游境外加速、手游租号、手游手柄免激活、区块链、移动办公安全、军队政府数据隔离、手机模拟信息、脚本自动化、插件化开发、无感知热更新、云控等技术领域。
 
-## VA架构 ##
-![](https://github.com/xxxyanchenxxx/temp/blob/master/va1.jpg)
+## VA中的术语 ##
+<table >
+        <tr>
+            <th>术语</th>
+            <th>解释</th>
+        </tr>
+        <tr  align="left">
+            <th>宿主</th>
+            <th>集成VirtualApp类库（lib）的App叫做宿主</th>
+        </tr>
+        <tr  align="left">
+            <th>宿主插件</th>
+            <th> 用于在同一个手机,运行另一种ABI的宿主包,又称做插件包,扩展包,宿主插件包,宿主扩展包</th>
+        </tr>
+        <tr  align="left">
+            <th>虚拟App/VApp</th>
+            <th>VA的虚拟环境多开的app</th>
+        </tr>
+        <tr  align="left">
+            <th>外部App</th>
+            <th>手机真实环境安装的app</th>
+        </tr>
+</table>  
+
+## VA技术架构 ##
+![](https://github.com/xxxyanchenxxx/temp/blob/master/va1.jpg)  
+可以看到，VA技术一共涉及到了Android的APP层，Framework层，以及Native层。  
+为什么要分为3层呢？ 这也是必不可少的。  
+因为一个APP想要在Android系统上运行，必须要安装了后系统才会接纳你。可是安装到VA内部的APP实际上并没有安装到系统中，所以正常情况下是无法运行的。那如何才能让它运行呢？  
+答：那就只有“欺骗”系统，让系统认为已经安装好了。而这个“欺骗”过程就是VA Framework的核心工作内容，也是整个VA的核心技术原理。  
+<table >
+        <tr>
+            <th>修改层次</th>
+            <th>功能与作用</th>
+        </tr>
+        <tr  align="left">
+            <th>APP层</th>
+            <th>由VA提供了一个内部的空间，用于安装要在其内部运行的APP，这个空间是系统隔离的。</th>
+        </tr>
+        <tr  align="left">
+            <th>Framework层</th>
+            <th>这一层主要给Android Framework和VAPP做代理，这也是VA的核心。VA提供了一套自己的VA Framework，处于Android Framework与VA APP之间。对于VAPP，其访问的所有系统Service均已被App Hook模块拦截住，它会修改VAPP的请求参数，将其中与VAPP安装信息相关的全部参数修改为宿主的参数之后发送给Android Framework（有部分请求会发送给自己的VA Server直接处理而不再发送给Android系统）。这样Android Framework收到VAPP请求后检查参数就会认为没有问题，待Android系统对该请求处理完成返回结果时，VA Framework同样也会拦截住该返回结果，此时再将原来修改过的参数全部还原为VAPP请求时发送的。这样VAPP与Android系统的交互也就能走通了。</th>
+        </tr>
+        <tr  align="left">
+            <th>Native层</th>
+            <th>在这一层主要为了完成2个工作，IO重定向和VA APP与Android系统交互的请求修改。IO重定向是因为可能有部分APP会通过写死的绝对路径访问，但是如果APP没有安装到系统，这个路径是不存在的，通过IO重定向，则将其转向VA内部安装的路径。另外有部分jni函数在VA Framework中无法hook的，所以需要在native层来做hook。</th>  
+        </tr>
+</table> 
+
+## VA进程架构 ##
+
+可以看到，VA运行时有4类进程：CHILD进程，HOST进程，VAPP进程，VAServer进程。  
+各类进程的作用解释：
+<table >
+        <tr>
+            <th>进程类型</th>
+            <th>功能与作用</th>
+        </tr>
+        <tr  align="left">
+            <th>CHILD进程</th>
+            <th>VA Host集成的其他进程，比如：保活进程，推送进程等。</th>
+        </tr>
+        <tr  align="left">
+            <th>HOST进程</th>
+            <th>VA Host的UI主界面所在的进程。默认主包是32位，插件包是64位，可以在修改配置文件切换。</th>
+        </tr>
+        <tr  align="left">
+            <th>VAPP进程</th>
+            <th>安装到VA中的APP启动后产生的进程，在运行时会将io.busniess.va:p2进程名修改VAPP的真实进程名。</th>  
+        </tr>
+        <tr  align="left">
+            <th>VAServer进程</th>
+            <th>VA Server的所在的进程，用于处理VA中不交予系统处理的请求，以及APP的安装处理。</th>  
+        </tr>
+</table> 
 
 ## VA能做什么？##
 1. 可以满足您的**双开/多开**需求    
@@ -113,26 +186,6 @@ VA已被**上百家**企业进行了广泛测试，包含**数十家上市公司
 截止目前，支持的系统版本:
 
 <table>
-        <tr>
-            <th>系统版本号</th>
-            <th>是否支持</th>
-        </tr>
-        <tr>
-            <th>4.1</th>
-            <th>支持</th>
-        </tr>
-        <tr>
-            <th>4.2</th>
-            <th>支持</th>
-        </tr>
-        <tr>
-            <th>4.3</th>
-            <th>支持</th>
-        </tr>
-        <tr>
-            <th>4.4</th>
-            <th>支持</th>
-        </tr>
         <tr>
             <th>5.0</th>
             <th>支持</th>

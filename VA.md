@@ -3,6 +3,9 @@
 ## VA是什么? ##
 VirtualApp(简称：VA)是一款运行于Android系统的沙盒产品，可以理解为轻量级的“Android虚拟机”。其产品形态为高可扩展，可定制的集成SDK，您可以基于VA或者使用VA定制开发各种看似不可能完成的项目。VA目前被广泛应用于APP多开、手游境外加速、手游租号、手游手柄免激活、区块链、移动办公安全、军队政府数据隔离、手机模拟信息、脚本自动化、插件化开发、无感知热更新、云控等技术领域。
 
+## VA架构 ##
+![](https://github.com/xxxyanchenxxx/temp/blob/master/va1.jpg)
+
 ## VA能做什么？##
 1. 可以满足您的**双开/多开**需求    
 VA可以让您在同一部手机上安装多个微信/QQ/WhatsApp/Facebook等APP，实现一部手机，多个账号同时登录。  
@@ -47,10 +50,6 @@ VA对于内部的App具有完全的监管和控制能力，几乎能满足您的
 
 ## VA开发文档 ##
 VA的详细开发文档请参考：[https://github.com/asLody/VirtualApp-Priv/wiki](https://github.com/asLody/VirtualApp-Priv/wiki)
-
-## VA架构 ##
-
-![](https://github.com/xxxyanchenxxx/temp/blob/master/va1.jpg)
 
 
 ## VA与其他技术方案对比 ##

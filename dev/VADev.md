@@ -7,7 +7,7 @@
 
 ## 1. VA源码目录介绍 ##
 下图是VA源码根目录：  
-![](https://github.com/xxxyanchenxxx/temp/blob/master/1.png)  
+![](https://github.com/xxxyanchenxxx/temp/blob/master/dev/1.png)  
 可以看到VA一共有4个源码目录，各个目录介绍如下：
 <table >
         <tr>
@@ -34,7 +34,7 @@
 
 ## 2. VA编译配置文件介绍 ##
 VA有2个配置文件，第一个配置文件是AppConfig.gradle：  
-![](https://github.com/xxxyanchenxxx/temp/blob/master/2_1.png)  
+![](https://github.com/xxxyanchenxxx/temp/blob/master/dev/2_1.png)  
 配置文件解释：  
 <table >
         <tr>
@@ -52,7 +52,7 @@ VA有2个配置文件，第一个配置文件是AppConfig.gradle：
 </table>  
 
 第二个配置文件是VAConfig.gradle：
-![](https://github.com/xxxyanchenxxx/temp/blob/master/2_2.png)  
+![](https://github.com/xxxyanchenxxx/temp/blob/master/dev/2_2.png)  
 配置文件解释：
 <table >
         <tr>
@@ -87,18 +87,18 @@ VA有2个配置文件，第一个配置文件是AppConfig.gradle：
 
 ## 3. VA核心代码解释 ##
 1. `com.lody.virtual.client`包下的代码主要用于VA Framework中的APP Hook部分，里面完成了对各个Service的HOOK处理  
-![](https://github.com/xxxyanchenxxx/temp/blob/master/3_1.png)  
+![](https://github.com/xxxyanchenxxx/temp/blob/master/dev/3_1.png)  
 2. `com.lody.virtual.server`包下的代码主要用于VA Framework中的APP Server部分，实现了对APP的安装处理以及其他不给Android系统处理的APP请求  
-![](https://github.com/xxxyanchenxxx/temp/blob/master/3_2.png)
+![](https://github.com/xxxyanchenxxx/temp/blob/master/dev/3_2.png)
 3. `mirror`包下的代码主要用于对系统隐藏类的引用，较少大量反射代码的编写  
-![](https://github.com/xxxyanchenxxx/temp/blob/master/3_3.png)
+![](https://github.com/xxxyanchenxxx/temp/blob/master/dev/3_3.png)
 4. `cpp`包下的代码主要用于VA Native部分，实现IO重定向和jni函数HOOK。其中：  
 	- `substrate`中提供了针对arm32和arm64的hook  
 	- `vfs.cpp`中实现了VA的虚拟文件系统，用于控制APP对文件的访问限制  
 	- `syscall_hook.cpp`中实现了对IO的Hook  
-![](https://github.com/xxxyanchenxxx/temp/blob/master/3_4.png)  
+![](https://github.com/xxxyanchenxxx/temp/blob/master/dev/3_4.png)  
 5. `DelegateApplicationExt.java`用于VA插件包，实现了对主包代码的加载执行  
-![](https://github.com/xxxyanchenxxx/temp/blob/master/3_5.png)  
+![](https://github.com/xxxyanchenxxx/temp/blob/master/dev/3_5.png)  
 
 </br></br>
 **下面开始第二部分，VA SDK使用介绍：**

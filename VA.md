@@ -28,7 +28,7 @@ VirtualApp(简称：VA)是一款运行于Android系统的沙盒产品，可以�
 </table>  
 
 ## VA技术架构 ##
-![](https://github.com/xxxyanchenxxx/temp/blob/master/va1.jpg)  
+![](https://github.com/xxxyanchenxxx/temp/blob/master/va_process.jpg)  
 可以看到，VA技术一共涉及到了Android的APP层，Framework层，以及Native层。  
 为什么要分为3层呢？ 这也是必不可少的。  
 因为一个APP想要在Android系统上运行，必须要安装了后系统才会接纳你。可是安装到VA内部的APP实际上并没有安装到系统中，所以正常情况下是无法运行的。那如何才能让它运行呢？  
@@ -132,7 +132,7 @@ VA对于内部的App具有完全的监管和控制能力，几乎能满足您的
 8. 同时VA也是该技术领域__唯一一款__对外商业授权的产品    
 截止目前已有**上百家**授权客户在付费使用VirtualApp商业版代码，集成VirtualApp代码的APP__日启动__次数__超过2亿次__，众多安卓工程师向我们提供不同场景下的用户反馈，通过我们技术团队不断优化迭代，不断提升产品性能与兼容性！
 
-## VA的集成 ##
+## VA如何集成？ ##
 第1步：在您的Application中调用VA接口```VirtualCore.get().startup()```来启动VA引擎  
 第2步:调用VA接口```VirtualCore.get().installPackageAsUser()```将目标APP安装到VA中  
 第3步:调用VA接口```VirtualCore.get().installPackageAsUser()```启动APP    
@@ -273,6 +273,6 @@ VA已被**上百家**企业进行了广泛测试，包含**数十家上市公司
 购买授权后，会有专门的技术问题反馈群。我们有多名技术工程师随时在线接受问题反馈，会在第一时间处理！
 
 ## VA开发文档 ##
-VA的详细开发文档请参考：[https://github.com/asLody/VirtualApp-Priv/wiki](https://github.com/asLody/VirtualApp-Priv/wiki)
+VA的详细开发文档请参考：[https://github.com/xxxyanchenxxx/temp/blob/master/dev/VADev.md](https://github.com/xxxyanchenxxx/temp/blob/master/dev/VADev.md)
 
 

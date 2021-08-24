@@ -32,11 +32,12 @@ VirtualApp(简称：VA)是一款运行于Android系统的沙盒产品，可以�
 可以看到，VA技术一共涉及到了Android的APP层，Framework层，以及Native层。  
 为什么要分为3层呢？ 这也是必不可少的。  
 因为一个APP想要在Android系统上运行，必须要安装了后系统才会接纳你。可是安装到VA内部的APP实际上并没有安装到系统中，所以正常情况下是无法运行的。那如何才能让它运行呢？  
-答：那就只有“欺骗”系统，让系统认为已经安装好了。而这个“欺骗”过程就是VA Framework的核心工作内容，也是整个VA的核心技术原理。  
+答：那就只有“欺骗”系统，让系统认为已经安装好了。而这个“欺骗”过程就是VA Framework的核心工作内容，也是整个VA的核心技术原理。    
+下面介绍下在这3个层次分别做了什么事情：
 <table >
         <tr>
-            <th>修改层次</th>
-            <th>功能与作用</th>
+            <th>层次</th>
+            <th>主要工作</th>
         </tr>
         <tr  align="left">
             <th>APP层</th>
@@ -53,7 +54,7 @@ VirtualApp(简称：VA)是一款运行于Android系统的沙盒产品，可以�
 </table> 
 
 ## VA进程架构 ##
-[https://github.com/xxxyanchenxxx/temp/blob/master/va_process.jpg](https://github.com/xxxyanchenxxx/temp/blob/master/va_process.jpg)  
+![](https://github.com/xxxyanchenxxx/temp/blob/master/va_process.jpg)    
 可以看到，VA运行时有4类进程：CHILD进程，HOST进程，VAPP进程，VAServer进程。  
 各类进程的作用解释：
 <table >
@@ -63,7 +64,7 @@ VirtualApp(简称：VA)是一款运行于Android系统的沙盒产品，可以�
         </tr>
         <tr  align="left">
             <th>CHILD进程</th>
-            <th>VA Host集成的其他进程，比如：保活进程，推送进程等。</th>
+            <th>由VA Host集成的其他进程，比如：保活进程，推送进程等。</th>
         </tr>
         <tr  align="left">
             <th>HOST进程</th>
@@ -77,7 +78,8 @@ VirtualApp(简称：VA)是一款运行于Android系统的沙盒产品，可以�
             <th>VAServer进程</th>
             <th>VA Server的所在的进程，用于处理VA中不交予系统处理的请求，以及APP的安装处理。</th>  
         </tr>
-</table> 
+</table>  
+
 
 ## VA能做什么？##
 1. 可以满足您的**双开/多开**需求    

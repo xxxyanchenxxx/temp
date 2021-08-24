@@ -53,7 +53,7 @@ VirtualApp(简称：VA)是一款运行于Android系统的沙盒产品，可以�
 </table> 
 
 ## VA进程架构 ##
-
+[https://github.com/xxxyanchenxxx/temp/blob/master/va_process.jpg](https://github.com/xxxyanchenxxx/temp/blob/master/va_process.jpg)  
 可以看到，VA运行时有4类进程：CHILD进程，HOST进程，VAPP进程，VAServer进程。  
 各类进程的作用解释：
 <table >

@@ -28,7 +28,7 @@ VirtualApp(简称：VA)是一款运行于Android系统的沙盒产品，可以�
 </table>  
 
 ## VA技术架构 ##
-![](https://github.com/xxxyanchenxxx/temp/blob/master/va_process.jpg)  
+![](https://github.com/xxxyanchenxxx/temp/blob/master/va_architecture.jpg)  
 可以看到，VA技术一共涉及到了Android的APP层，Framework层，以及Native层。  
 为什么要分为3层呢？ 这也是必不可少的。  
 因为一个APP想要在Android系统上运行，必须要安装了后系统才会接纳你。可是安装到VA内部的APP实际上并没有安装到系统中，所以正常情况下是无法运行的。那如何才能让它运行呢？  

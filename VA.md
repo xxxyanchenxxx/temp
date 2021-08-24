@@ -53,7 +53,7 @@ VirtualApp(简称：VA)是一款运行于Android系统的沙盒产品，可以�
         </tr>
 </table> 
 </br>
-**总结：**</br>
+总结：  
 通过上面的技术架构可以看到，VA内部的APP实际是跑在VA自己的VA Framework之上。  
 VA已将其内部APP的全部系统请求都拦截住，通过这项技术也能对APP进行全面的控制，而不仅仅只是多开。并且为了方便开发者，VA还提供了SDK以及Hook SDK。
 

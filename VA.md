@@ -52,36 +52,49 @@ VirtualApp(简称：VA)是一款运行于Android系统的沙盒产品，可以�
             <th>在这一层主要为了完成2个工作，IO重定向和VA APP与Android系统交互的请求修改。IO重定向是因为可能有部分APP会通过写死的绝对路径访问，但是如果APP没有安装到系统，这个路径是不存在的，通过IO重定向，则将其转向VA内部安装的路径。另外有部分jni函数在VA Framework中无法hook的，所以需要在native层来做hook。</th>  
         </tr>
 </table> 
+**总结：**  
+通过上面的技术架构可以看到，VA内部的APP实际是跑在VA自己的VA Framework之上。  
+VA已将其内部APP的全部系统请求都拦截住，通过这项技术也能对APP进行全面的控制，而不仅仅只是多开。并且为了方便开发者，VA还提供了SDK以及Hook SDK。
+
 
 ## VA进程架构 ##
 ![](https://github.com/xxxyanchenxxx/temp/blob/master/va_process.jpg)    
-可以看到，VA运行时有4类进程：CHILD进程，HOST进程，VAPP进程，VAServer进程。  
-各类进程的作用解释：
+可以看到，VA运行时有5类进程：CHILD进程，VA Host Main进程，VA Host Plugin进程，VAPP Client进程，VAServer进程。  
+VA为了同时支持32位APP与64位APP，需要安装2个包：一个主包，一个插件包。(本文档按照主包32位，插件包64位来编写)  
+主包中含了VA的所有代码，插件包中只有一段加载主包代码执行的代码，无其他代码。所以插件包几乎不用更新，只需要更新主包即可。  
+另外也可以在配置文件中修改主包为64位，插件包为32位。  
+
+各类进程的作用与解释如下：
 <table >
         <tr>
             <th>进程类型</th>
-            <th>功能与作用</th>
+            <th>作用</th>
         </tr>
         <tr  align="left">
-            <th>CHILD进程</th>
+            <th>CHILD</th>
             <th>由VA Host集成的其他进程，比如：保活进程，推送进程等。</th>
         </tr>
         <tr  align="left">
-            <th>HOST进程</th>
-            <th>VA Host的UI主界面所在的进程。默认主包是32位，插件包是64位，可以在修改配置文件切换。</th>
+            <th>VA Host Main</th>
+            <th>VA主包的UI主界面所在的进程。默认主包是32位，插件包是64位，可在配置文件中修改切换。</th>
         </tr>
         <tr  align="left">
-            <th>VAPP进程</th>
-            <th>安装到VA中的APP启动后产生的进程，在运行时会将io.busniess.va:p2进程名修改VAPP的真实进程名。</th>  
+            <th>VA Host Plugin</th>
+            <th>支持64位APP的插件包所在进程。默认主包是32位，插件包是64位，可在配置文件中修改切换。</th>
         </tr>
         <tr  align="left">
-            <th>VAServer进程</th>
-            <th>VA Server的所在的进程，用于处理VA中不交予系统处理的请求，以及APP的安装处理。</th>  
+            <th>VAPP Client</th>
+            <th>安装到VA中的APP启动后产生的进程，在运行时会将io.busniess.va:pxxx进程名修改VAPP的真实进程名。</th>  
+        </tr>
+        <tr  align="left">
+            <th>VAServer</th>
+            <th>VA Server的所在的进程，用于处理VA中不交予系统处理的请求。比如APP的安装处理。</th>  
         </tr>
 </table>  
 
 
-## VA能做什么？##
+## VA能满足您的一切需求##
+通过上面的技术架构，我们可以了解到VA可以对APP进行全面的控制，几乎能满足您在各个领域的一切需求：  
 1. 可以满足您的**双开/多开**需求    
 VA可以让您在同一部手机上安装多个微信/QQ/WhatsApp/Facebook等APP，实现一部手机，多个账号同时登录。  
 
@@ -117,10 +130,10 @@ VA对于内部的App具有完全的监管和控制能力，几乎能满足您的
 8. 同时VA也是该技术领域__唯一一款__对外商业授权的产品    
 截止目前已有**上百家**授权客户在付费使用VirtualApp商业版代码，集成VirtualApp代码的APP__日启动__次数__超过2亿次__，众多安卓工程师向我们提供不同场景下的用户反馈，通过我们技术团队不断优化迭代，不断提升产品性能与兼容性！
 
-## VA如何使用？ ##
+## VA的集成 ##
 第1步：在您的Application中调用VA接口```VirtualCore.get().startup()```来启动VA引擎  
 第2步:调用VA接口```VirtualCore.get().installPackageAsUser()```将目标APP安装到VA中  
-第3步:调用VA接口```VirtualCore.get().installPackageAsUser()```启动您安装到VA中的APP    
+第3步:调用VA接口```VirtualCore.get().installPackageAsUser()```启动APP    
 **仅通过以上3个API就完成了基础使用，VA已屏蔽了复杂的技术细节，并提供了接口API，让您的开发变得很简单！**
 
 ## VA开发文档 ##
@@ -128,12 +141,12 @@ VA的详细开发文档请参考：[https://github.com/asLody/VirtualApp-Priv/wi
 
 
 ## VA与其他技术方案对比 ##
-如果要实现对APP的管控，以下是所有可能的技术方案：  
+针对APP的管控部分，以下是所有可能的技术方案：  
 <table >
         <tr>
             <th>技术方案</th>
             <th>原理简介</th>
-            <th>风险点</th>
+            <th>点评</th>
             <th>运行性能</th>
             <th>兼容稳定性</th>
             <th>项目维护成本</th>
@@ -181,7 +194,7 @@ VA的详细开发文档请参考：[https://github.com/asLody/VirtualApp-Priv/wi
     </table>
 
 
-## VA的兼容稳定性怎么样？ ##
+## VA的兼容稳定性##
 VA已被**上百家**企业进行了广泛测试，包含**数十家上市公司高标准**的测试及反馈，几乎涵盖了海内外的各种机型设备和场景！
 为您的稳定运行提供了充分的保障！  
 

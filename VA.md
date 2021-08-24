@@ -40,15 +40,15 @@ VirtualApp(简称：VA)是一款运行于Android系统的沙盒产品，可以�
             <th>主要工作</th>
         </tr>
         <tr  align="left">
-            <th>APP层</th>
+            <th>VA Space</th>
             <th>由VA提供了一个内部的空间，用于安装要在其内部运行的APP，这个空间是系统隔离的。</th>
         </tr>
         <tr  align="left">
-            <th>Framework层</th>
+            <th>VA Framework</th>
             <th>这一层主要给Android Framework和VAPP做代理，这也是VA的核心。VA提供了一套自己的VA Framework，处于Android Framework与VA APP之间。对于VAPP，其访问的所有系统Service均已被App Hook模块拦截住，它会修改VAPP的请求参数，将其中与VAPP安装信息相关的全部参数修改为宿主的参数之后发送给Android Framework（有部分请求会发送给自己的VA Server直接处理而不再发送给Android系统）。这样Android Framework收到VAPP请求后检查参数就会认为没有问题，待Android系统对该请求处理完成返回结果时，VA Framework同样也会拦截住该返回结果，此时再将原来修改过的参数全部还原为VAPP请求时发送的。这样VAPP与Android系统的交互也就能走通了。</th>
         </tr>
         <tr  align="left">
-            <th>Native层</th>
+            <th>VA Native</th>
             <th>在这一层主要为了完成2个工作，IO重定向和VA APP与Android系统交互的请求修改。IO重定向是因为可能有部分APP会通过写死的绝对路径访问，但是如果APP没有安装到系统，这个路径是不存在的，通过IO重定向，则将其转向VA内部安装的路径。另外有部分jni函数在VA Framework中无法hook的，所以需要在native层来做hook。</th>  
         </tr>
 </table> 
@@ -137,10 +137,6 @@ VA对于内部的App具有完全的监管和控制能力，几乎能满足您的
 第2步:调用VA接口```VirtualCore.get().installPackageAsUser()```将目标APP安装到VA中  
 第3步:调用VA接口```VirtualCore.get().installPackageAsUser()```启动APP    
 **仅通过以上3个API就完成了基础使用，VA已屏蔽了复杂的技术细节，并提供了接口API，让您的开发变得很简单！**
-
-## VA开发文档 ##
-VA的详细开发文档请参考：[https://github.com/asLody/VirtualApp-Priv/wiki](https://github.com/asLody/VirtualApp-Priv/wiki)
-
 
 ## VA与其他技术方案对比 ##
 针对APP的管控部分，以下是所有可能的技术方案：  
@@ -275,5 +271,8 @@ VA已被**上百家**企业进行了广泛测试，包含**数十家上市公司
 
 ## 集成VA遇到问题如何反馈？ ##
 购买授权后，会有专门的技术问题反馈群。我们有多名技术工程师随时在线接受问题反馈，会在第一时间处理！
+
+## VA开发文档 ##
+VA的详细开发文档请参考：[https://github.com/asLody/VirtualApp-Priv/wiki](https://github.com/asLody/VirtualApp-Priv/wiki)
 
 

@@ -9,81 +9,36 @@
 下图是VA源码根目录：  
 ![](https://github.com/xxxyanchenxxx/temp/blob/master/dev/1.png)  
 可以看到VA一共有4个源码目录，各个目录介绍如下：
-<table >
-        <tr>
-            <th>目录名称</th>
-            <th>作用</th>
-        </tr>
-        <tr  align="left">
-            <th>app</th>
-            <th>VA Demo主包源码所在目录</th>
-        </tr>
-        <tr  align="left">
-            <th>app-ext</th>
-            <th>VA Demo插件包源码所在目录</th>
-        </tr>
-        <tr  align="left">
-            <th>lib</th>
-            <th>VA库源码所在目录</th>
-        </tr>
-        <tr  align="left">
-            <th>lib-ext</th>
-            <th>VA插件库源码所在目录</th>
-        </tr>
-</table>  
+目录名称 | 作用
+---- | ---
+app | VA Demo主包源码所在目录
+app-ext | VA Demo插件包源码所在目录
+lib | VA库源码所在目录
+lib-ext | VA插件库源码所在目录
+<br/>
 
 ## 2. VA编译配置文件介绍 ##
 VA有2个配置文件，第一个配置文件是AppConfig.gradle：  
 ![](https://github.com/xxxyanchenxxx/temp/blob/master/dev/2_1.png)  
 配置解释：  
-<table >
-        <tr>
-            <th>配置名称</th>
-            <th>作用</th>
-        </tr>
-        <tr  align="left">
-            <th>PACKAGE_NAME</th>
-            <th>用于配置VA主包的包名</th>
-        </tr>
-        <tr  align="left">
-            <th>EXT_PACKAGE_NAME</th>
-            <th>用于配置VA插件包的包名</th>
-        </tr>
-</table>  
+配置名称 | 作用
+---- | ---
+PACKAGE_NAME | 用于配置VA主包的包名
+EXT_PACKAGE_NAME | 用于配置VA插件包的包名
+<br/>
 
 第二个配置文件是VAConfig.gradle：
 ![](https://github.com/xxxyanchenxxx/temp/blob/master/dev/2_2.png)  
 配置解释：
-<table >
-        <tr>
-            <th>配置名称</th>
-            <th>作用</th>
-        </tr>
-        <tr  align="left">
-            <th>VA_MAIN_PACKAGE_32BIT</th>
-            <th>用于配置VA主包是32位还是64位，true为32位，false为64位</th>
-        </tr>
-        <tr  align="left">
-            <th>VA_ACCESS_PERMISSION_NAME </th>
-            <th>用于配置VA中4大组建的权限名称 </th>
-        </tr>
-        <tr  align="left">
-            <th>VA_AUTHORITY_PREFIX </th>
-            <th>用于配置VA主包中ContentProvider的authorities </th>
-        </tr>
-        <tr  align="left">
-            <th>VA_EXT_AUTHORITY_PREFIX </th>
-            <th>用于配置VA插件包中ContentProvider的authorities </th>
-        </tr>
-        <tr  align="left">
-            <th>VA_VERSION</th>
-            <th>用于配置VA库版本，开发者一般不需要关心</th>
-        </tr>
-        <tr  align="left">
-            <th>VA_VERSION_CODE</th>
-            <th>用于配置VA库版本代码，开发者一般不需要关心</th>
-        </tr>
-</table>  
+配置名称 | 作用
+---- | ---
+VA_MAIN_PACKAGE_32BIT | 用于配置VA主包是32位还是64位，true为32位，false为64位
+VA_ACCESS_PERMISSION_NAME | 用于配置VA中4大组建的权限名称
+VA_AUTHORITY_PREFIX | 用于配置VA主包中ContentProvider的authorities
+VA_EXT_AUTHORITY_PREFIX | 用于配置VA插件包中ContentProvider的authorities
+VA_VERSION | 用于配置VA库版本，开发者一般不需要关心
+VA_VERSION_CODE | 用于配置VA库版本代码，开发者一般不需要关心
+<br/>
 
 ## 3. VA核心代码解释 ##
 1. `com.lody.virtual.client`包下的代码运行在VAPP Client进程中，主要用于VA Framework中的APP Hook部分，完成对各个Service的HOOK处理  
@@ -103,14 +58,213 @@ VA有2个配置文件，第一个配置文件是AppConfig.gradle：
 </br></br>
 **下面开始第二部分，VA SDK使用介绍：**
 
-## 1. 安装APP ##
-## VA 2.1 开始，引入了新的安装API:
+## 1. VA工程接入 ##
+### 用Android Studio打开VirtualApp-Priv项目
+
+可见多个模块:
+* app
+* app-ext
+* lib
+* lib-ext
+
+其中**lib**和**lib-ext**属于VirtualApp`核心库`以及`扩展库`，**app**和**app-ext**则属于`示例app`。
+
+
+
+### 创建自己的App
+新建一个application类型的module，并添加lib模块为依赖
+```gradle
+implementation project(':lib')
+```
+
+### 根据需求修改VAConfig.gradle：
+```gradle
+ext {
+    VA_MAIN_PACKAGE_32BIT = true  // 主包为32位
+    VA_ACCESS_PERMISSION_NAME = "io.busniess.va.permission.SAFE_ACCESS"  // VirtualApp组件用到的权限名称
+    VA_AUTHORITY_PREFIX = "io.busniess.va"  // VirtualApp中ContentProvider用到的authority，不能与其他app重复
+    VA_EXT_AUTHORITY_PREFIX = "io.busniess.va.ext"  // VirtualApp扩展包中ContentProvider用到的authority，不能与其他app重复
+    // ...
+}
+```
+
+### 在AndroidManifest.xml添加所需的权限
+```xml
+<uses-permission android:name="${VA_ACCESS_PERMISSION_NAME}" />
+```
+权限名称必须与**VAConfig.gradle**中所声明的保持一致，可以在**build.gradle**中添加**Placeholder**来防止出错。
+
+``` gradle
+android {
+    // ...
+    manifestPlaceholders = [
+                VA_ACCESS_PERMISSION_NAME: rootProject.ext.VA_ACCESS_PERMISSION_NAME,
+    ]
+}
+```
+
+### 创建一个Application
+
+#### 复写attachBaseContext方法，添加引导VirtualApp的代码：
+
+```java
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        try {
+            VirtualCore.get().startup(base, mConfig);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
+
+```
+
+#### 这里传入了一个VirtualApp的一个配置 mConfig
+```java
+private SettingConfig mConfig = new SettingConfig() {
+        @Override
+        public String getMainPackageName() {
+            // 主包的包名
+            return BuildConfig.APPLICATION_ID;
+        }
+
+        @Override
+        public String getExtPackageName() {
+            // 扩展包包名
+            return BuildConfig.EXT_PACKAGE_NAME;
+        }
+
+        @Override
+        public boolean isEnableIORedirect() {
+            // 是否启用IO重定向，建议开启
+            return true;
+        }
+
+        @Override
+        public Intent onHandleLauncherIntent(Intent originIntent) {
+            // 回到桌面的 Intent 拦截操作，这里把回到桌面的动作改成回到主包的BackHomeActivity页面
+            Intent intent = new Intent();
+            ComponentName component = new ComponentName(getMainPackageName(), BackHomeActivity.class.getName());
+            intent.setComponent(component);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            return intent;
+        }
+
+        @Override
+        public boolean isUseRealDataDir(String packageName) {
+            // data路径模拟真实路径格式，需要启用IO重定向。部分加固会校该验路径格式
+            return false;
+        }
+
+        @Override
+        public boolean isOutsidePackage(String packageName) {
+            // 是否是外部app。 设置外部 app 对内部app看见
+            return false;
+        }
+
+        @Override
+        public boolean isAllowCreateShortcut() {
+            // 是否允许创建桌面快捷图标。建议关闭（false），自己实现桌面快捷方式
+            return false;
+        }
+
+        @Override
+        public boolean isHostIntent(Intent intent) {
+            // 是否由VirtualApp处理的Intent
+            return intent.getData() != null && "market".equals(intent.getData().getScheme());
+        }
+
+        @Override
+        public boolean isUseRealApkPath(String packageName) {
+            // 安装apk路径模拟真实路径，需要启用IO重定向。部分加固会校验该路径格式
+            return false;
+        }
+
+        @Override
+        public boolean isEnableVirtualSdcardAndroidData() {
+            // 启用外置存储下的 `Android/data` 目录的重定向
+            // 需要重定向支持
+            // Android 11 之后必须启用！！
+            return BuildCompat.isR();
+        }
+
+        @Override
+        public String getVirtualSdcardAndroidDataName() {
+            // 设置外置存储下的 `Android/data` 目录的重定向路径
+            // /sdcard/Android/data/com.example.test/ ==>> /sdcard/{VirtualSdcardAndroidDataName}/{user_id}/Android/data/com.example.test/
+            return "Android_va";
+        }
+
+        @Override
+        public FakeWifiStatus getFakeWifiStatus() {
+            // 修改wifi信息。 null 则不修改
+            return null;
+        }
+
+        @Override
+        public boolean isHideForegroundNotification() {
+            // 隐藏前台消息，不建议隐藏
+            return false;
+        }
+
+        @Override
+        public boolean isOutsideAction(String action) {
+            // 外部 Intent 的 action 事件响应
+            return MediaStore.ACTION_IMAGE_CAPTURE.equals(action)
+                || MediaStore.ACTION_VIDEO_CAPTURE.equals(action)
+                || Intent.ACTION_PICK.equals(action);
+        }
+
+        @Override
+        public boolean isDisableDrawOverlays(String packageName) {
+            // 禁用 VAPP 的顶层覆盖（浮窗）。
+            return false;
+        }
+    };
+```
+
+### 复写onCreate，添加初始化VirtualApp的代码：
+```java
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        VirtualCore virtualCore = VirtualCore.get();
+        virtualCore.initialize(new VirtualCore.VirtualInitializer() {
+            @Override
+            public void onMainProcess() {
+                // 主进程回调
+            }
+
+            @Override
+            public void onVirtualProcess() {
+                // 虚拟App进程回调
+            }
+
+            @Override
+            public void onServerProcess() {
+                // 服务端进程回调
+            }
+
+            @Override
+            public void onChildProcess() {
+                // 其他子进程回调
+            }
+        });
+    }
+
+```
+
+由于VirtualApp会启动多个进程，所以Application会进入N次，不同的进程会走到VirtualInitializer不同的回调，可以在这里根据进程类型添加额外的初始化代码。
+
+## 2. 安装APP ##
+## API:
 ```java
 VirtualCore.java
 
  public VAppInstallerResult installPackage(Uri uri, VAppInstallerParams params);
 ```
-## Uri是什么?
+## 参数Uri是什么?
 Uri决定了**需要安装的apk**的来源，目前支持 package 和 file 协议。
 ### Package Uri 示例:
 ```java
@@ -194,4 +348,182 @@ for (File file : dir.listFiles()) {
 
 
 
+
+## 3. 启动及管理Application ##
+# 启动App
+
+```java
+// class VActivityManager
+public boolean launchApp(final int userId, String packageName)
+````
+实例代码：
+```java
+VActivityManager.get().launchApp(0, "com.tencent.mobileqq");
+```
+
+# 杀死App
+```java
+// class VActivityManager
+public void killAppByPkg(String pkg, int userId)
+public void killAllApps()
+```
+实例代码：
+```java
+// 杀死userid为0的QQ程序进程
+VActivityManager.get().killAppByPkg("com.tencent.mobileqq", 0);
+
+```
+
+```java
+// 杀死所有App进程
+VActivityManager.get().killAllApps();
+```
+
+# 卸载App
+```java
+// class VirtualCore
+public boolean uninstallPackageAsUser(String pkgName, int userId)
+public boolean uninstallPackage(String pkgName)
+```
+实例代码：
+```java
+// 卸载userid为0的QQ程序
+VirtualCore.get().uninstallPackageAsUser("com.tencent.mobileqq", 0);
+// 卸载所有user下安装的QQ程序
+VirtualCore.get().uninstallPackage("com.tencent.mobileqq");
+```
+
+# 查询已安装的App
+```java
+// class VirtualCore
+public List<InstalledAppInfo> getInstalledApps(int flags)
+```
+
+## 4. Java Hook使用 ##
+VirtualApp中实现了一套Xposed接口,用户只要会使用Xposed就可以做到原本需要系统内置Xposed才能做到的事情.
+但是用户也需要明白,VA中Xposed的作用域是VA这个APP中的,不能越权控制系统或其他外部App.
+
+
+VA中提供了一个App创建启动的回调接口`com.lody.virtual.client.core.AppCallback`,接口如下:
+```java
+public interface AppCallback {
+    void beforeStartApplication(String packageName, String processName, Context context);
+
+    void beforeApplicationCreate(String packageName, String processName, Application application);
+
+    void afterApplicationCreate(String packageName, String processName, Application application);
+}
+```
+
+> 接口说明:
+
+名称 | 说明
+---- | ---
+beforeStartApplication | APP启动之前,创建之后
+beforeApplicationCreate | APP被创建之前,Application已经准备完毕,Application.OnCreate未执行
+afterApplicationCreate | APP被创建之后,Application.OnCreate已被执行
+
+<br/>
+
+>参数说明:
+
+名称 | 说明
+---- | ---
+packageName | VAPP的包名
+processName | VAPP的进程名
+context | VAPP的Application context
+application | VAPP的Application
+
+<br/>
+
+> 注: APP的创建指的是`Application`被创建.
+
+接口有了,接下来就是怎么使用了.查看[`VirualApp进程说明`](VirualApp进程说明.md),可以知道,
+我们只需要在`VAPP进程`回调里(`onVirtualProcess`) 设置App回调 `AppCallback` 就可以达到目的.
+
+> 宿主Application代码,参考[io/busniess/va/App.java](https://github.com/asLody/VirtualApp-Priv/blob/v2.1/VirtualApp/app/src/main/java/io/busniess/va/App.java)
+
+```java
+@Override
+    public void onCreate() {
+        super.onCreate();
+        VirtualCore virtualCore = VirtualCore.get();
+        virtualCore.initialize(new VirtualCore.VirtualInitializer() {
+            @Override
+            public void onVirtualProcess() {
+                // 设置VAPP启动回调
+                virtualCore.setAppCallback(new MyComponentDelegate());
+            }
+        });
+    }
+```
+
+> [MyComponentDelegate](https://github.com/asLody/VirtualApp-Priv/blob/v2.1/VirtualApp/app/src/main/java/io/busniess/va/delegate/MyComponentDelegate.java)类代码
+
+```java
+public class MyComponentDelegate implements AppCallback {
+
+    @Override
+    public void beforeStartApplication(String packageName, String processName, Context context) {
+    }
+
+    @Override
+    public void beforeApplicationCreate(String packageName, String processName, Application application) {
+
+        XposedHelpers.findAndHookMethod("android.app.ContextImpl", ClassLoader.getSystemClassLoader(), "getOpPackageName", new XC_MethodHook() {
+            @Override
+            protected void beforeHookedMethod(MethodHookParam param) {
+                VLog.printStackTrace("getOpPackageName");
+                param.setResult(VirtualCore.get().getHostPkg());
+            }
+        });
+    }
+
+    @Override
+    public void afterApplicationCreate(String packageName, String processName, Application application) {
+    }
+}
+```
+
+上面示例中,已经添加了一个Xposed的使用案例.Xposed的入口是一个`IXposedHookLoadPackage`的实例,他提供了一个`void handleLoadPackage(XC_LoadPackage.LoadPackageParam loadPackageParam)`的接口,有一个`XC_LoadPackage.LoadPackageParam`的参数.这里我们虽然不能完全一一对用,但是也完全够用了.`loadPackageParam.classsload`可以用`context.getClassLoader()`或者`application.getClassLoader()`都是可以的.后续`XposedHelpers`,`XposedBridge`原来怎么用,这里也一样使用.
+
+
+
+## 5. Native Hook使用 ##
+对于ARM 32和ARM 64的Hook，只需要引入头文件```CydiaSubstrate.h```即可,Hook API:  
+```MSHookFunction(Type_ *symbol, Type_ *replace, Type_ **result)```  
+>参数说明:
+
+名称 | 说明
+---- | ---
+symbol | 要Hook的地址  
+replace | 你自定义的hook函数
+result | 被hook函数的备份
+<br/>
+参考```syscall_hook.cpp```代码
+
+```cpp
+auto is_accessible_str = "__dl__ZN19android_namespace_t13is_accessibleERKNSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEE";
+void *is_accessible_addr = getSym(linker_path, is_accessible_str);
+if (is_accessible_addr) {
+    MSHookFunction(is_accessible_addr, (void *) new_is_accessible,(void **)     &orig_is_accessible);
+}
+```
+
+在`MSHookFunction`内部会自动判断当前是ARM32还是ARM64：
+
+
+```cpp
+_extern void MSHookFunction(void *symbol, void *replace, void **result) {
+    if (*result != nullptr) {
+        return;
+    }
+    // ALOGE("[MSHookFunction] symbol(%p) replace(%p) result(%p)", symbol, replace, *result);
+#ifdef __aarch64__
+    A64HookFunction(symbol, replace, result);
+#else
+    SubstrateHookFunction(NULL, symbol, replace, result);
+#endif
+}
+```
 

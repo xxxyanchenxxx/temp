@@ -95,7 +95,7 @@ VA为了同时支持32位APP与64位APP，需要安装2个包：一个主包，�
 </table>  
 
 
-## VA能满足您的一切需求##
+## VA能满足您的一切需求 ##
 通过上面的技术架构，我们可以了解到VA可以对APP进行全面的控制，并且提供了Hook SDK，几乎能满足您在各个领域的一切需求：  
 1. 可以满足您的**双开/多开**需求    
 VA可以让您在同一部手机上安装多个微信/QQ/WhatsApp/Facebook等APP，实现一部手机，多个账号同时登录。  
@@ -132,7 +132,7 @@ VA对于内部的App具有完全的监管和控制能力，几乎能满足您的
 8. 同时VA也是该技术领域__唯一一款__对外商业授权的产品    
 截止目前已有**上百家**授权客户在付费使用VirtualApp商业版代码，集成VirtualApp代码的APP__日启动__次数__超过2亿次__，众多安卓工程师向我们提供不同场景下的用户反馈，通过我们技术团队不断优化迭代，不断提升产品性能与兼容性！
 
-## VA如何集成？ ##
+## 集成VA步骤 ##
 第1步：在您的Application中调用VA接口```VirtualCore.get().startup()```来启动VA引擎  
 第2步:调用VA接口```VirtualCore.get().installPackageAsUser()```将目标APP安装到VA中  
 第3步:调用VA接口```VirtualCore.get().installPackageAsUser()```启动APP    

@@ -184,12 +184,14 @@ APP类型 | 是否支持
 <br/>
 
 支持的HOOK类型:
+
 Hook类型 | 是否支持
 ---- | ---
 Java Hook | 支持
 Native Hook | 支持
 
 支持的CPU类型:
+
 Hook类型 | 是否支持
 ---- | ---
 ARM 32 | 支持

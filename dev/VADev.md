@@ -534,3 +534,12 @@ _extern void MSHookFunction(void *symbol, void *replace, void **result) {
 }
 ```
 
+
+</br>
+</br>
+
+[其他更多的开发指导请见Wiki](https://github.com/asLody/VirtualApp-Priv/wiki)
+
+</br>
+</br>
+

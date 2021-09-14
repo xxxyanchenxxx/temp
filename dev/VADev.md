@@ -12,6 +12,7 @@
 下图是VA源码根目录：  
 ![](https://github.com/xxxyanchenxxx/temp/blob/master/dev/1.png)  
 可以看到VA一共有4个源码目录，各个目录介绍如下：
+
 目录名称 | 作用
 ---- | ---
 app | VA Demo主包源码所在目录
@@ -24,6 +25,7 @@ lib-ext | VA插件库源码所在目录
 VA有2个配置文件，第一个配置文件是AppConfig.gradle：  
 ![](https://github.com/xxxyanchenxxx/temp/blob/master/dev/2_1.png)  
 配置解释：  
+
 配置名称 | 作用
 ---- | ---
 PACKAGE_NAME | 用于配置VA主包的包名
@@ -33,6 +35,7 @@ EXT_PACKAGE_NAME | 用于配置VA插件包的包名
 第二个配置文件是VAConfig.gradle：
 ![](https://github.com/xxxyanchenxxx/temp/blob/master/dev/2_2.png)  
 配置解释：
+
 配置名称 | 作用
 ---- | ---
 VA_MAIN_PACKAGE_32BIT | 用于配置VA主包是32位还是64位，true为32位，false为64位

@@ -24,7 +24,8 @@ lib-ext | VA插件库源码所在目录
 
 ## 2. VA编译配置文件介绍 ##
 VA的编译配置文件是VAConfig.gradle：  
-![](https://github.com/xxxyanchenxxx/temp/blob/master/dev/2_1.png)  
+![](https://github.com/xxxyanchenxxx/temp/blob/master/dev/2_1.jpg)  
+
 配置解释：
 
 配置名称 | 作用

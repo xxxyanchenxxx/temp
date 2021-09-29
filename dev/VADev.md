@@ -23,22 +23,14 @@ lib-ext | VA插件库源码所在目录
 <br/>
 
 ## 2. VA编译配置文件介绍 ##
-VA有2个配置文件，第一个配置文件是AppConfig.gradle：  
+VA的编译配置文件是VAConfig.gradle：  
 ![](https://github.com/xxxyanchenxxx/temp/blob/master/dev/2_1.png)  
-配置解释：  
+配置解释：
 
 配置名称 | 作用
 ---- | ---
 PACKAGE_NAME | 用于配置VA主包的包名
 EXT_PACKAGE_NAME | 用于配置VA插件包的包名
-<br/>
-
-第二个配置文件是VAConfig.gradle：
-![](https://github.com/xxxyanchenxxx/temp/blob/master/dev/2_2.png)  
-配置解释：
-
-配置名称 | 作用
----- | ---
 VA_MAIN_PACKAGE_32BIT | 用于配置VA主包是32位还是64位，true为32位，false为64位
 VA_ACCESS_PERMISSION_NAME | 用于配置VA中4大组建的权限名称
 VA_AUTHORITY_PREFIX | 用于配置VA主包中ContentProvider的authorities

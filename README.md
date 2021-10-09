@@ -152,8 +152,8 @@ VA | 轻量级虚拟机，速度快，对设备要求低 | 无上述风险点  |
 
 ## 集成VA步骤 ##
 第1步：在您的Application中调用VA接口```VirtualCore.get().startup()```来启动VA引擎  
-第2步:调用VA接口```VirtualCore.get().installPackageAsUser()```将目标APP安装到VA中  
-第3步:调用VA接口```VirtualCore.get().installPackageAsUser()```启动APP    
+第2步:调用VA接口```VirtualCore.get().installPackageAsUser(userId, packageName)```将目标APP安装到VA中  
+第3步:调用VA接口```VActivityManager.get().launchApp(userId, packageName)```启动APP    
 **仅通过以上3个API就完成了基础使用，VA已屏蔽了复杂的技术细节，并提供了接口API，让您的开发变得很简单！**
 
 ## VA的兼容稳定性 ##
@@ -227,7 +227,7 @@ VirtualApp虚拟机技术归属于：济宁市罗盒网络科技有限公司，�
   <br/>
 
 
-代码更新
+代码更新内容
 ------
 
 **2021年 9月21号 至 2021年 10月9号 商业版代码更新内容**

@@ -16,8 +16,8 @@ VirtualApp(简称：VA)是一款运行于Android系统的沙盒产品，可以�
 
 ## VA技术架构 ##
 ![](https://github.com/xxxyanchenxxx/temp/blob/master/va_architecture.jpg)  
-VA技术一共涉及到了Android的APP层，Framework层以及Native层。
-一个APP想要在Android系统上运行，必须要安装后系统才会接纳。安装到VA内部的APP实际上并没有安装到系统中，所以正常情况下是无法运行的。那如何才能让它运行呢？
+VA技术一共涉及到了Android的APP层，Framework层以及Native层。  
+一个APP想要在Android系统上运行，必须要安装后系统才会接纳。安装到VA内部的APP实际上并没有安装到系统中，所以正常情况下是无法运行的。那如何才能让它运行呢？  
 答：那就只有“欺骗”系统，让系统认为已经安装。而这个“欺骗”过程就是VA Framework的核心工作内容，也是整个VA的核心技术原理。  
 
 **下面介绍下在这3个层次分别做了什么事情：**

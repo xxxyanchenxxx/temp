@@ -3,7 +3,7 @@
 本文档主要介绍2部分。  
 第一部分是VA的源码结构介绍，这部分是为了让开发者能快速了解掌握VA源码框架。  
 第二部分是VA的基础SDK使用说明。 
-其他更多的开发文档见[WIFI](https://github.com/asLody/VirtualApp-Priv/wiki)  
+其他更多的开发文档见[VA私有库WIFI](https://github.com/asLody/VirtualApp-Priv/wiki)  
 [VA产品说明文档](https://github.com/xxxyanchenxxx/temp/blob/master/VA.md)
 </br>
 

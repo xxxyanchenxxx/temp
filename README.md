@@ -24,7 +24,7 @@ VA技术一共涉及到了Android的APP层，Framework层以及Native层。
 层次 | 主要工作
 ---- | ---
 VA Space | 由VA提供了一个内部的空间，用于安装要在其内部运行的APP，这个空间是系统隔离的。
-VA Framework | 这一层主要给Android Framework和VAPP做代理，这也是VA的核心。VA提供了一套自己的VA Framework，处于Android Framework与VA APP之间。</br>1. 对于VAPP，其访问的所有系统Service均已被App Hook模块拦截住，它会修改VAPP的请求参数，将其中与VAPP安装信息相关的全部参数修改为宿主的参数之后发送给Android Framework（有部分请求会发送给自己的VA Server直接处理而不再发送给Android系统）。这样Android Framework收到VAPP请求后检查参数就会认为没有问题。</br>2. 待Android系统对该请求处理完成返回结果时，VA Framework同样也会拦截住该返回结果，此时再将原来修改过的参数全部还原为VAPP请求时发送的。</br>这样VAPP与Android系统的交互也就能跑通了。
+VA Framework | 这一层主要给Android Framework和VAPP做代理，这也是VA的核心。VA提供了一套自己的VA Framework，处于Android Framework与VA APP之间。</br>1. 对于VAPP，其访问的所有系统Service均已被 `VA Framework` 代理，它会修改VAPP的请求参数，将其中与VAPP安装信息相关的全部参数修改为宿主的参数之后发送给Android Framework（有部分请求会发送给自己的VA Server直接处理而不再发送给Android系统）。这样Android Framework收到VAPP请求后检查参数就会认为没有问题。</br>2. 待Android系统对该请求处理完成返回结果时，VA Framework同样也会拦截住该返回结果，此时再将原来修改过的参数全部还原为VAPP请求时发送的。</br>这样VAPP与Android系统的交互也就能跑通了。
 VA Native | 在这一层主要为了完成2个工作，IO重定向和VA APP与Android系统交互的请求修改。</br>1. IO重定向是因为可能有部分APP会通过写死的绝对路径访问，但是如果APP没有安装到系统，这个路径是不存在的，通过IO重定向，则将其转向VA内部安装的路径。</br>2. 另外有部分jni函数在VA Framework中无法hook的，所以需要在native层来做hook。
 </br>
 
@@ -231,6 +231,7 @@ VirtualApp虚拟机技术归属于：济宁市罗盒网络科技有限公司，�
 ------
 
 **2021年 9月21号 至 2021年 10月9号 商业版代码更新内容**
+
 354、修复va core进程死亡后，APP可能打不开的问题<br/>
 353、增加未安装插件时无法启动的错误日志<br/>
 
